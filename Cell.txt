@@ -1,0 +1,67 @@
+### Cell - The Code starts here
+cell1 = Cell(1, "R")
+print(hasattr(cell1, "next"))
+cell2 = Cell(2, "R")
+cell3 = Cell(3, "R")
+# Create a ladder cell
+ladder_start = Cell(4, "L")
+cell5 = Cell(5, "R")
+ladder_end = Cell(10, "R")
+# Create a snake cell
+snake_start = Cell(8, "S")
+snake_end = Cell(2, "R")
+# Set next connections
+cell1.update_next(cell2)
+cell2.update_next(cell3)
+cell3.update_next(ladder_start)
+#  Trying to update ladder_start next attribute with cell that has inappropriate position
+try:
+    ladder_start.update_next(ladder_end)
+except ValueError:
+    print("Error, Trying again")
+    ladder_start.update_next(cell5)
+# Set leap connections (snake or ladder)
+ladder_start.update_leap(ladder_end)
+snake_start.update_leap(snake_end)
+try:
+    cell6 = Cell(6.1, "R")
+except TypeError:
+    print("Exception occured")
+    cell6 = Cell(6, "R")
+# Print the cells to see their connections
+print(cell1)
+print(cell1.next==cell2)
+print(cell2)
+print(cell3)
+print(ladder_start)
+print(ladder_end)
+print(snake_start)
+print(snake_end)
+print(cell5)
+print(cell6)
+print(ladder_start.leap==ladder_end)
+print(ladder_start.next)
+print(snake_start.leap==snake_end)
+### Cell - The Code ends here
+
+
+### Cell - The Output starts here:
+True
+Error, Trying again
+Exception occured
+1:R->
+True
+2:R->
+3:R->
+4:L->10
+10:R->
+8:S->2
+2:R->
+5:R->
+6:R->
+True
+5:R->
+True
+
+Process finished with exit code 0
+### Cell - The Output ends here

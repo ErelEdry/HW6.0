@@ -1,0 +1,184 @@
+### TaskSchedular - The Code starts here
+scheduler = TaskScheduler()
+auto_worker_id_gen = id_generator(12)
+auto_task_id_gen = id_generator(20)
+# Add tasks
+print("Adding tasks to the scheduler:")
+task0 = Task(
+    task_id=next(auto_task_id_gen),
+    description="Task 0: Analyze data",
+    urgency=5,
+    importance=8,
+    time_window=(9, 12),
+    needed_skills={"Python": 3, "Data Analysis": 2}
+)
+task1 = Task(
+    task_id=next(auto_task_id_gen),
+    description="Task 1: Prepare report",
+    urgency=2,
+    importance=6,
+    time_window=(18, 22),
+    needed_skills={"Word Processing": 2}
+)
+task2 = Task(
+    task_id=next(auto_task_id_gen),
+    description="Task 2: Team presentation",
+    urgency=4,
+    importance=7,
+    time_window=(10, 11),
+    needed_skills={"Presentation Software": 1}
+)
+task3 = Task(
+    task_id=next(auto_task_id_gen),
+    description="Task 3: Analyze data",
+    urgency=4,
+    importance=7,
+    time_window=(9, 12),
+    needed_skills={"Presentation Software": 3, "Data Analysis": 2}
+)
+
+task4 = Task(
+    task_id=next(auto_task_id_gen),
+    description="Task 4: Analyze data",
+    urgency=4,
+    importance=8,
+    time_window=(18, 20),
+    needed_skills={"Java": 5, "Data Analysis v.2": 2}
+)
+scheduler.add_task(task0)
+scheduler.add_task(task1)
+scheduler.add_task(task2)
+scheduler.add_task(task3)
+scheduler.add_task(task4)
+
+print(scheduler.get_tasks()) 
+
+# Add workers
+print("Adding workers to the scheduler:")
+worker1 = Worker(
+    worker_id=next(auto_worker_id_gen),
+    name="Alice",
+    skills={"Python": 5, "Data Analysis": 5, "Word Processing": 3},
+    availability=[(9, 12), (14, 18)],
+    salary=2000
+)
+worker2 = Worker(
+    worker_id=next(auto_worker_id_gen),
+    name="Bob",
+    skills={"Presentation Software": 2, "Word Processing": 2},
+    availability=[(10, 12), (14, 16)],
+    salary=20000
+)
+worker3 = Worker(
+    worker_id=next(auto_worker_id_gen),
+    name="Jennifer",
+    skills={'Data Analysis v.2': 2, "Java": 7},
+    availability=[(6, 12), (14, 18)],
+    salary=25000
+)
+scheduler.add_worker(worker1)
+scheduler.add_worker(worker2)
+scheduler.add_worker(worker3)
+worker_gen = scheduler.workers_gen()
+for worker in worker_gen:
+    print(worker)
+
+# Allocate tasks
+print("Allocating tasks to workers:")
+scheduler.allocate_task()
+scheduler.allocate_task()
+scheduler.allocate_task()
+print(f"Completed tasks: {[task.description for task in scheduler.completed_tasks_gen()]}")
+print()
+
+# Update a task
+print("Updating a task...")
+try:
+    scheduler.update_task(task1.get_task_id(), urgency=10)
+    print("Updating ended successfully.")
+except Exception as e:
+    print(e)
+    print(f"Updated Task: {task1}")
+    print()
+
+# Generate completed tasks
+print("Iterating through completed tasks:")
+for completed_task in scheduler.completed_tasks_gen():
+    print(completed_task)
+    
+    
+
+print("Iterating through completed tasks post undo task:")
+scheduler.undo_task()
+for completed_task in scheduler.completed_tasks_gen():
+    print(completed_task)
+
+
+print("Undo another task")
+scheduler.undo_task()
+for completed_task in scheduler.completed_tasks_gen():
+    print(completed_task)
+
+print("Promoting senior....")
+scheduler.promote_senior()
+worker_gen = scheduler.workers_gen()
+for worker in worker_gen:
+    print(worker)
+    
+print("Yearly updating all workers....")
+scheduler.yearly_update()
+worker_gen = scheduler.workers_gen()
+for worker in worker_gen:
+    print(worker)
+    
+print(scheduler.peek_task())
+### TaskSchedular - The Code ends here
+
+### TaskSchedular - The Output starts here:
+Adding tasks to the scheduler:
+top->Task ID: 0, Description: Task 0: Analyze data, Urgency: 5, Importance: 8, Time Window: (9, 12), Needed skills: {'Python': 3, 'Data Analysis': 2} | 
+________________________________________________________________________________________________________________________________________________
+Task ID: 4, Description: Task 4: Analyze data, Urgency: 4, Importance: 8, Time Window: (18, 20), Needed skills: {'Java': 5, 'Data Analysis v.2': 2} | 
+___________________________________________________________________________________________________________________________________________________
+Task ID: 3, Description: Task 3: Analyze data, Urgency: 4, Importance: 7, Time Window: (9, 12), Needed skills: {'Presentation Software': 3, 'Data Analysis': 2} | 
+_______________________________________________________________________________________________________________________________________________________________
+Task ID: 2, Description: Task 2: Team presentation, Urgency: 4, Importance: 7, Time Window: (10, 11), Needed skills: {'Presentation Software': 1} | 
+_________________________________________________________________________________________________________________________________________________
+Task ID: 1, Description: Task 1: Prepare report, Urgency: 2, Importance: 6, Time Window: (18, 22), Needed skills: {'Word Processing': 2} | 
+________________________________________________________________________________________________________________________________________
+|
+Adding workers to the scheduler:
+Worker ID: 0, Name: Alice, Skills: {'Python': 5, 'Data Analysis': 5, 'Word Processing': 3},
+Availability: [(9, 12), (14, 18)], Salary: 2000
+Worker ID: 1, Name: Bob, Skills: {'Presentation Software': 2, 'Word Processing': 2},
+Availability: [(10, 12), (14, 16)], Salary: 20000
+Worker ID: 2, Name: Jennifer, Skills: {'Data Analysis v.2': 2, 'Java': 7},
+Availability: [(6, 12), (14, 18)], Salary: 25000
+Allocating tasks to workers:
+Completed tasks: ['Task 0: Analyze data']
+
+Updating a task...
+Updating ended successfully.
+Iterating through completed tasks:
+Task ID: 0, Description: Task 0: Analyze data, Urgency: 5, Importance: 8, Time Window: (9, 12), Needed skills: {'Python': 3, 'Data Analysis': 2}
+Iterating through completed tasks post undo task:
+Undo another task
+No tasks to undo.
+Promoting senior....
+Worker ID: 1, Name: Bob, Skills: {'Presentation Software': 2, 'Word Processing': 2},
+Availability: [(10, 12), (14, 16)], Salary: 20000
+Worker ID: 2, Name: Jennifer, Skills: {'Data Analysis v.2': 2, 'Java': 7},
+Availability: [(6, 12), (14, 18)], Salary: 25000
+Worker ID: 0, Name: Alice, Skills: {'Python': 5, 'Data Analysis': 5, 'Word Processing': 3},
+Availability: [(9, 12), (14, 18)], Salary: 3000
+Yearly updating all workers....
+Worker ID: 1, Name: Bob, Skills: {'Presentation Software': 3, 'Word Processing': 3},
+Availability: [(10, 12), (14, 16)], Salary: 20000
+Worker ID: 2, Name: Jennifer, Skills: {'Data Analysis v.2': 3, 'Java': 8},
+Availability: [(6, 12), (14, 18)], Salary: 25000
+Worker ID: 0, Name: Alice, Skills: {'Python': 6, 'Data Analysis': 6, 'Word Processing': 4},
+Availability: [(9, 12), (14, 18)], Salary: 3000
+Task ID: 0, Description: Task 0: Analyze data, Urgency: 5, Importance: 8, Time Window: (9, 12), Needed skills: {'Python': 3, 'Data Analysis': 2}
+
+Process finished with exit code 0
+### TaskSchedular - The Output ends here

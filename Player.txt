@@ -1,0 +1,41 @@
+### Player - The Code starts here
+b = Board(board_width=5, board_height=5)
+player1 = Player(name="Player", board=b)
+d = Dice()
+while True:
+    c = d.roll()
+    print(c)
+    if not player1.move(c):
+        print(player1)
+    else:
+        print(player1)
+        break
+### Player - The Code ends here
+
+
+### Player - The Output starts here:
+3
+Player(name=Player, position=9:R->)
+2
+Player(name=Player, position=11:R->)
+2
+Player(name=Player, position=13:R->)
+4
+Player(name=Player, position=17:R->)
+3
+Player(name=Player, position=4:R->)
+3
+Player(name=Player, position=7:R->)
+1
+Player(name=Player, position=8:R->)
+6
+Player(name=Player, position=14:R->)
+6
+Player(name=Player, position=4:R->)
+2
+Player(name=Player, position=24:R->)
+4
+Player(name=Player, position=25:R->)
+
+Process finished with exit code 0
+### Player - The Output ends here

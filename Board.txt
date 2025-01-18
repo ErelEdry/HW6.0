@@ -1,0 +1,198 @@
+### Board - The Code starts here
+# Example: Create a 5x5 game board with predefined snakes and ladders
+snakes_ladders = {
+    'L': {5: 12, 3: 11, 6: 21},  # Ladders: position 3 -> 9, 5 -> 11, 6 -> 24
+    'S': {19: 4, 20: 2, 18: 10}  # Snakes: position 20 -> 4, 16 -> 2, 18 -> 10
+}
+board_width = 5
+board_height = 5
+
+# Create the board
+board = Board(board_width=board_width, board_height=board_height, snakes_ladders=snakes_ladders)
+print("Game Board Representation:\n")
+print(board)  
+
+# Iterate through the board cells and print details
+print("\nDetailed Cell Information:\n")
+for cell in board:
+    print(f"Cell Position: {cell.position}")
+    print(f"  Cell Type: {cell.cell_type}")
+    if cell.leap:
+        leap_type = "Ladder" if cell.cell_type == "L" else "Snake"
+        print(f"  {leap_type} Leap: {cell.position} -> {cell.leap.position}")
+    print("")
+
+
+print("Iterating over Board...")
+for i in board:
+    print(i)
+
+# Example: Interactively traversing the board
+print("\nSimulating a Game Move with default board:\n")
+board = Board()
+current_cell = board.get_grid()  
+print(f"Starting at cell {current_cell.position}")
+
+while current_cell.next and not current_cell.leap:
+    current_cell = current_cell.next
+    print(f"Moved to cell {current_cell.position}")
+
+if current_cell.leap:
+    leap_target = current_cell.leap.position
+    cell_type = "Ladder" if current_cell.cell_type == "L" else "Snake"
+    print(f"Landed on a {cell_type} at cell {current_cell.position}! Moving to cell {leap_target}.")
+    current_cell = current_cell.leap
+
+print(f"Final position we landed on: Cell {current_cell.position}")
+
+
+try:
+    failed_board = Board(5, 5, {"L": {5:3}, "S": {19: 4, 20: 2, 18: 10}})
+except Exception as e:
+    print(e)
+
+try:
+    failed_board = Board(5, 5, {"L": {5:20, 7:13}, "S": {19: 21, 20: 2, 18: 10}})
+except Exception as e:
+    print(e)
+
+try:
+    failed_board = Board(5, 5, {"L": {5:4}, "S": {19: 4, 20: 2, 18: 10}})
+except Exception as e:
+    print(e)
+### Board - The Code ends here
+
+
+### Board - The Output starts here:
+Game Board Representation:
+
+[21][22][23][24][25]
+[16][17][S18->10][S19->04][S20->02]
+[11][12][13][14][15]
+[L06->21][07][08][09][10]
+[01][02][L03->11][04][L05->12]
+
+
+Detailed Cell Information:
+
+Cell Position: 1
+  Cell Type: R
+
+Cell Position: 2
+  Cell Type: R
+
+Cell Position: 3
+  Cell Type: L
+  Ladder Leap: 3 -> 11
+
+Cell Position: 4
+  Cell Type: R
+
+Cell Position: 5
+  Cell Type: L
+  Ladder Leap: 5 -> 12
+
+Cell Position: 6
+  Cell Type: L
+  Ladder Leap: 6 -> 21
+
+Cell Position: 7
+  Cell Type: R
+
+Cell Position: 8
+  Cell Type: R
+
+Cell Position: 9
+  Cell Type: R
+
+Cell Position: 10
+  Cell Type: R
+
+Cell Position: 11
+  Cell Type: R
+
+Cell Position: 12
+  Cell Type: R
+
+Cell Position: 13
+  Cell Type: R
+
+Cell Position: 14
+  Cell Type: R
+
+Cell Position: 15
+  Cell Type: R
+
+Cell Position: 16
+  Cell Type: R
+
+Cell Position: 17
+  Cell Type: R
+
+Cell Position: 18
+  Cell Type: S
+  Snake Leap: 18 -> 10
+
+Cell Position: 19
+  Cell Type: S
+  Snake Leap: 19 -> 4
+
+Cell Position: 20
+  Cell Type: S
+  Snake Leap: 20 -> 2
+
+Cell Position: 21
+  Cell Type: R
+
+Cell Position: 22
+  Cell Type: R
+
+Cell Position: 23
+  Cell Type: R
+
+Cell Position: 24
+  Cell Type: R
+
+Cell Position: 25
+  Cell Type: R
+
+Iterating over Board...
+1:R->
+2:R->
+3:L->11
+4:R->
+5:L->12
+6:L->21
+7:R->
+8:R->
+9:R->
+10:R->
+11:R->
+12:R->
+13:R->
+14:R->
+15:R->
+16:R->
+17:R->
+18:S->10
+19:S->4
+20:S->2
+21:R->
+22:R->
+23:R->
+24:R->
+25:R->
+
+Simulating a Game Move with default board:
+
+Starting at cell 1
+Moved to cell 2
+Moved to cell 3
+Landed on a Ladder at cell 3! Moving to cell 9.
+Final position we landed on: Cell 9
+Invalid value
+Invalid value
+Invalid value
+
+Process finished with exit code 0
+### Board - The Output ends here

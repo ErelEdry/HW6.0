@@ -1,0 +1,122 @@
+### Worker - The Code starts here
+workers_id_gen = id_generator(8)
+worker1 = Worker(
+    worker_id=next(workers_id_gen),
+    name="Alice",
+    skills={"Python": 5, "Java": 4},
+    availability=[(9, 12), (14, 18)],
+    salary=50000
+)
+print(worker1)
+try:
+    worker2 = Worker(
+    worker_id=next(workers_id_gen), 
+    name="A1ice",
+    skills={"Python": 5, "Java": 4},
+    availability=[(9, 12)],
+    salary=45000
+    )
+
+except Exception as e:
+    print(e)
+
+try:
+    worker3 = Worker(
+        worker_id=next(workers_id_gen),
+        name="Bob",
+        skills={"Python": -5, "MicrosoftOffice": 4},
+        availability=[(9, 12)],
+        salary=60000
+    )
+except Exception as e:
+    print(e)
+    worker3 = Worker(
+        worker_id=next(workers_id_gen),
+        name="Bob",
+        skills={"Python": 5, "MicrosoftOffice": 4},
+        availability=[(9, 12)],
+        salary=60000
+    )
+    print(worker3)
+
+try:
+    worker4 = Worker(
+        worker_id=next(workers_id_gen),
+        name="Charlie",
+        skills={"C++": 3, "JavaScript": 4},
+        availability=[(10, 9)],
+        salary=55000
+    )
+except Exception as e:
+    print(e)
+    worker4 = Worker(
+        worker_id=next(workers_id_gen),
+        name="Charlie",
+        skills={"C++": 3, "JavaScript": 4},
+        availability=[(10, 12)],
+        salary=55000
+    )
+    print(worker4)
+
+worker5 = Worker(
+    worker_id=next(workers_id_gen),
+    name="Eve",
+    skills={"Ruby": 3},
+    availability=[(9, 17)],
+    salary=70000
+)
+print(worker5)
+worker5.update_salary(5000)
+print(f"Updated salary: {worker5.get_salary()}")
+
+worker6 = Worker(
+    worker_id=next(workers_id_gen),
+    name="Grace",
+    skills={"Swift": 4},
+    availability=[(9, 12), (15, 18)],
+    salary=80000
+)
+print(worker6)
+worker6.update_availability((12, 14))
+print(f"Updated availability: {worker6.get_availability()}")
+worker6.update_availability((6, 7))
+print(f"Updated availability: {worker6.get_availability()}")
+print(worker6)
+
+try:
+    worker7 = Worker(
+        worker_id=next(workers_id_gen),
+        name="Grace",
+        skills={"Swift": 4},
+        availability=[(9, 12), (15, 18)],
+        salary=80000
+    )
+    print(worker7)
+except StopIteration:
+    print("StopIteration: worker_id_gen has no more ids")
+### Worker - The Code ends here
+
+
+### Worker - The Output starts here:
+Worker ID: 0, Name: Alice, Skills: {'Python': 5, 'Java': 4},
+Availability: [(9, 12), (14, 18)], Salary: 50000
+Name must be a all alphabetic and non-empty string.
+Skills must all be positive integers.
+Worker ID: 3, Name: Bob, Skills: {'Python': 5, 'MicrosoftOffice': 4},
+Availability: [(9, 12)], Salary: 60000
+Availability must be a list of time slot tuples.
+Worker ID: 5, Name: Charlie, Skills: {'C++': 3, 'JavaScript': 4},
+Availability: [(10, 12)], Salary: 55000
+Worker ID: 6, Name: Eve, Skills: {'Ruby': 3},
+Availability: [(9, 17)], Salary: 70000
+Updated salary: 75000
+Worker ID: 7, Name: Grace, Skills: {'Swift': 4},
+Availability: [(9, 12), (15, 18)], Salary: 80000
+Updated availability: [(9, 14), (15, 18)]
+Updated availability: [(9, 14), (15, 18), (6, 7)]
+Worker ID: 7, Name: Grace, Skills: {'Swift': 4},
+Availability: [(9, 14), (15, 18), (6, 7)], Salary: 80000
+StopIteration: worker_id_gen has no more ids
+
+Process finished with exit code 0
+### Worker - The Output ends here

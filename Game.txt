@@ -1,0 +1,65 @@
+### Game - The Code starts here
+game = Game(2, 2, 2, ["Shir"])
+game.play_turn()
+print(game.run_game())
+path = game.solve()
+print(path, f"\nTest result for shortest path {path == [1, 2, 3, 4, 5, 6, 24, 25]}")
+add_game = Game(6, 6, snakes_ladders={"L": {5: 18, 10: 33, 14: 25}, "S": {34: 9, 32: 16, 22: 12, 19: 17}},
+                game_players=["Tal", "Yuval"])
+add_game.play_turn()
+print(add_game.run_game())
+path = add_game.solve()
+print(path, f"\nTest result for shortest path {path == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 36]}")
+### Game - The Code ends here
+
+
+### Game - The Output starts here:
+Invalid type for one of the following argument: board_width, board_height, snakes_ladders
+Omri rolled a 3.
+Tal rolled a 3.
+Game Board:
+[21][22][23][24][25]
+[S16->02][17][S18->10][19][S20->04]
+[11][12][13][14][15]
+[L06->24][07][08][09][10]
+[01][02][L03->09][04][L05->11]
+
+Starting the game!
+Omri rolled a 6.
+Tal rolled a 1.
+Omri rolled a 4.
+Tal rolled a 5.
+Omri rolled a 6.
+Omri reached the end and wins!
+(Player(name=Omri, position=25:R->), 4)
+[1, 2, 3, 4, 5, 6, 24, 25] 
+Test result for shortest path True
+Tal rolled a 2.
+Yuval rolled a 1.
+Game Board:
+[31][S32->16][33][S34->09][35][36]
+[25][26][27][28][29][30]
+[S19->17][20][21][S22->12][23][24]
+[13][L14->25][15][16][17][18]
+[07][08][09][L10->33][11][12]
+[01][02][03][04][L05->18][06]
+
+Starting the game!
+Tal rolled a 4.
+Yuval rolled a 3.
+Tal rolled a 3.
+Yuval rolled a 4.
+Tal rolled a 5.
+Yuval rolled a 2.
+Tal rolled a 6.
+Yuval rolled a 1.
+Tal rolled a 2.
+Yuval rolled a 3.
+Tal rolled a 4.
+Tal reached the end and wins!
+(Player(name=Tal, position=36:R->), 7)
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 36] 
+Test result for shortest path True
+
+Process finished with exit code 0
+### Game - The Output ends here
