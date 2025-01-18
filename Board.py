@@ -1,4 +1,5 @@
 from Cell import Cell
+
 class Board:
     def __init__(self, board_width=5, board_height=5,snakes_ladders={'L': {3: 9, 5: 11, 6: 24}, 'S': {20: 4, 16: 2, 18: 10}}):
         if not isinstance(board_width, int):
@@ -13,7 +14,6 @@ class Board:
             raise TypeError("snakes_ladders must be a dictionary")
         if not all(key in ['S', 'L'] for key in snakes_ladders):
             raise ValueError("snakes_ladders must be a dictionary with keys 'S' and 'L'")
-
 
         self.board_width = board_width
         self.board_height = board_height
@@ -32,13 +32,12 @@ class Board:
 
     def __repr__(self):
         board_repr = ""
-        ladder_snake_positions = {}  # Dictionary to map ladders and snakes to their destinations
+        ladder_snake_positions = {}
 
-        # Collect ladder and snake positions
         for cell in self:
             if cell.cell_type in {"L", "S"}:
-                ladder_snake_positions[cell.position] = (
-                    cell.leap.position,
+                ladder_snake_positions[cell.data.val] = (
+                    cell.leap.data.val,
                     cell.cell_type,
                 )
 
@@ -54,29 +53,28 @@ class Board:
                         row_repr += f"[S{cell_num:02d}->{target:02d}]"
                 else:
                     row_repr += f"[{cell_num:02d}]"
-            board_repr = row_repr + "\n" + board_repr  # Reverse row order to mimic game style
+            board_repr = row_repr + "\n" + board_repr
         return board_repr
 
     def get_grid(self):
-            grid = {}
+        grid = {}
 
-            for position in range(1, self.board_width * self.board_height + 1):
-                grid[position] = Cell(position)
+        for position in range(1, self.board_width * self.board_height + 1):
+            grid[position] = Cell(position)
 
-            for start, end in self.snakes_ladders['L'].items():
-                grid[start] = Cell(start, "L")
-                grid[start].update_leap(grid[end])
+        for start, end in self.snakes_ladders['L'].items():
+            grid[start] = Cell(start, "L")
+            grid[start].update_leap(grid[end])
 
-            for start, end in self.snakes_ladders['S'].items():
-                grid[start] = Cell(start, "S")
-                grid[start].update_leap(grid[end])
+        for start, end in self.snakes_ladders['S'].items():
+            grid[start] = Cell(start, "S")
+            grid[start].update_leap(grid[end])
 
-            for position in range(1, self.board_width * self.board_height):
-                grid[position].update_next(grid[position + 1])
+        for position in range(1, self.board_width * self.board_height):
+            grid[position].update_next(grid[position + 1])
 
-            return grid
+        return grid
 
     def __len__(self):
         board_size=self.board_height*self.board_width
         return board_size
-

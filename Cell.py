@@ -1,60 +1,56 @@
 from CellUpdateError import CellUpdateError
+from ADTs import Node
+
+
 class Cell:
-
     def __init__(self, position, cell_type="R"):
-        self.position= position
-        self.cell_type= cell_type
         if not isinstance(position, int):
-            raise TypeError("Position need to be an number")
-
+            raise TypeError("Position must be an integer")
         if not isinstance(cell_type, str):
-            raise TypeError("Cell type need to be a string")
-
+            raise TypeError("Cell type must be a string")
         if position < 1:
-            raise ValueError("Position need to be positive number")
-
+            raise ValueError("Position must be a positive number")
         if cell_type not in ["R", "S", "L"]:
+            raise ValueError("Cell type must be one of: R, S, L")
 
-            raise ValueError("Cell type need to be one of: R, S, L")
+        self.data = Node(position)
+        self.cell_type = cell_type
         self.next = None
         self.leap = None
 
     def update_next(self, next_cell):
         if not isinstance(next_cell, Cell):
-            raise TypeError("the next cell must be Cell type")
+            raise CellUpdateError(next_cell)
+
         if self.next is not None:
-            raise CellUpdateError
-        if next_cell.position != self.position + 1:
-            raise ValueError("The next cell must be in the next number")
+            raise CellUpdateError(next_cell)
+
+        if next_cell.data.val != self.data.val + 1:
+            raise ValueError("The next cell must be in the next position")
+
         self.next = next_cell
+        self.data.next = next_cell.data
 
     def update_leap(self, leap):
-            if self.cell_type == "R":
-                raise CellUpdateError
+        if self.cell_type == "R":
+            raise CellUpdateError(leap)
 
-            if not isinstance(leap, Cell):
-                raise TypeError("The leap argument must be a Cell")
+        if not isinstance(leap, Cell):
+            raise CellUpdateError(leap)
 
-            if self.cell_type == "L" and leap.position <= self.position:
-                raise ValueError("For ladder cells, leap must be to a forward position")
+        if self.cell_type == "L" and leap.data.val <= self.data.val:
+            raise ValueError("For ladder cells, leap must be to a forward position")
 
-            if self.cell_type == "S" and leap.position >= self.position:
-                raise ValueError("For snake cells, leap must be to a backward position")
+        if self.cell_type == "S" and leap.data.val >= self.data.val:
+            raise ValueError("For snake cells, leap must be to a backward position")
 
-            self.leap = leap
+        self.leap = leap
 
     def __repr__(self):
+        position_str = str(self.data.val)
         if self.cell_type == "R":
-            if self.next:
-                next_pos = self.next.position
-            else:
-                next_pos = ""
-            return f"{self.position}:{self.cell_type}->{next_pos}"
+            next_pos = str(self.next.data.val) if self.next else ""
+            return f"{position_str}:{self.cell_type}->{next_pos}"
         else:
-            if self.leap:
-                leap_pos = self.leap.position
-            else:
-                leap_pos = ""
-            return f"{self.position}:{self.cell_type}->{leap_pos}"
-
-
+            leap_pos = str(self.leap.data.val) if self.leap else ""
+            return f"{position_str}:{self.cell_type}->{leap_pos}"

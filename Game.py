@@ -26,22 +26,21 @@ class Game:
             roll_result = self.__dice.roll()
             print(f"{player.name} rolled {roll_result}")
 
-            old_position = player.position
+            old_position = player.position.data.val if player.position else None
 
-            if player.move(roll_result) is True:#check if the player won
+            if player.move(roll_result) is True:
                 print(f"{player.name} won the game!")
                 self.winner = player
                 return
 
-            print(f"{player.name} moved from position {old_position} to position {player.position}")
+            print(f"{player.name} moved from position {old_position} to position {player.position.data.val}")
 
-            for other_player in self.__players: #if player rolled to another player position bring him back to cell 1!!!
-                if other_player != player and other_player.position == player.position:
+            for other_player in self.__players:
+                if other_player != player and other_player.position.data.val == player.position.data.val:
                     print(f"{other_player.name} was sent back to position 1")
-                    other_player.position = 1
+                    other_player.position = self.__board.get_grid()[1]
 
     def run_game(self):
-        #this is BFS algorithm (the optimal one to find the shortes way from one point to other)
         while self.winner is None:
             self.play_turn()
 
@@ -76,11 +75,6 @@ class Game:
                     if state not in visited:
                         visited.add(state)
                         queue.enqueue((new_pos, path + [new_pos]))
-            
+
     def __repr__(self):
         return f"Game(players={self.__players},\nboard={self.__board}\n****winner={self.winner if self.winner else 'game is still going on….'}****)"
-
-
-    
-
-        

@@ -1,4 +1,5 @@
 from Board import Board
+
 class Player:
     def __init__(self, name, board):
         if not isinstance(name, str):
@@ -13,7 +14,8 @@ class Player:
         self.num_turns=0
 
     def __repr__(self):
-        return f"Player(name={self.name}, position={self.position})"
+        pos_val = self.position.data.val if self.position else None
+        return f"Player(name={self.name}, position={pos_val})"
 
     def move(self, roll):
         if not isinstance(roll, int):
@@ -22,21 +24,16 @@ class Player:
             raise ValueError("roll need to be smaller than 7 and bigger than 0")
 
         if self.position is None:
-            self.position = 1
+            self.position = self.board.get_grid()[1]
+            return False
 
-        new_position = self.position + roll
+        current_pos = self.position.data.val
+        new_position = current_pos + roll
 
         board_size = len(self.board)
         if new_position >= board_size:
-            self.position = board_size
+            self.position = self.board.get_grid()[board_size]
             return True
         else:
-            self.position = new_position
+            self.position = self.board.get_grid()[new_position]
             return False
-
-
-
-
-
-
-    
