@@ -1,34 +1,58 @@
 from Cell import Cell
 
+
 class Board:
     def __init__(self, board_width=5, board_height=5,snakes_ladders={'L': {3: 9, 5: 11, 6: 24}, 'S': {20: 4, 16: 2, 18: 10}}):
-        if not isinstance(board_width, int):
-            raise TypeError("board_width must be a int")
-        if board_width < 4:
-            raise ValueError("board_width must be bigger than 4")
-        if not isinstance(board_height, int):
-            raise TypeError("board_height must be a int")
-        if board_height < board_width:
-            raise ValueError("board_height must be a equally or bigger than the board_width")
-        if not isinstance(snakes_ladders, dict):
-            raise TypeError("snakes_ladders must be a dictionary")
-        if not all(key in ['S', 'L'] for key in snakes_ladders):
-            raise ValueError("snakes_ladders must be a dictionary with keys 'S' and 'L'")
+        try:
+            if not isinstance(board_width, int) or not isinstance(board_height, int):
+                raise TypeError("Invalid type for one of the following argument: board_width, board_height")
 
+            if not isinstance(snakes_ladders, dict) or not all(key in ['S', 'L'] for key in snakes_ladders):
+                raise ValueError("Invalid type for one of the following argument: board_width, board_height")
+
+            calculated_size = board_width * board_height
+            if calculated_size < 25:
+                raise ValueError("Invalid type for one of the following argument: board_width, board_height")
+
+            if not snakes_ladders['L'] or not snakes_ladders['S']:
+                raise ValueError("Invalid type for one of the following argument: board_width, board_height")
+
+            for ladder_start, ladder_end in snakes_ladders['L'].items():
+                if not isinstance(ladder_start, int) or not isinstance(ladder_end, int):
+                    raise TypeError("Invalid type for one of the following argument: board_width, board_height")
+                if ladder_start >= ladder_end or ladder_start > calculated_size or ladder_end > calculated_size:
+                    raise ValueError("Invalid type for one of the following argument: board_width, board_height")
+
+            for snake_start, snake_end in snakes_ladders['S'].items():
+                if not isinstance(snake_start, int) or not isinstance(snake_end, int):
+                    raise TypeError("Invalid type for one of the following argument: board_width, board_height")
+                if snake_start <= snake_end or snake_start > calculated_size or snake_end > calculated_size:
+                    raise ValueError("Invalid type for one of the following argument: board_width, board_height")
+
+        except (TypeError, ValueError) as e:
+            print(f"{e}")
+            board_width = 5
+            board_height = 5
+            snakes_ladders = {'L': {3: 9, 5: 11, 6: 24}, 'S': {20: 4, 16: 2, 18: 10}}
+            calculated_size = board_width * board_height
+
+        self.__size = calculated_size
         self.board_width = board_width
         self.board_height = board_height
         self.snakes_ladders = snakes_ladders
+        self.__grid = {}
+        self.get_grid()
 
     def __iter__(self):
-        self.position = 0
+        self.current_position = 1
         return self
 
     def __next__(self):
-        position= self.position+1
-        if position >self.board_width*self.board_height:
-            return StopIteration()
-        self.position=position
-        return self.get_grid()[position]
+        if self.current_position > self.__size:
+            raise StopIteration
+        cell = self.__grid[self.current_position]
+        self.current_position += 1
+        return cell
 
     def __repr__(self):
         board_repr = ""
@@ -36,8 +60,8 @@ class Board:
 
         for cell in self:
             if cell.cell_type in {"L", "S"}:
-                ladder_snake_positions[cell.data.val] = (
-                    cell.leap.data.val,
+                ladder_snake_positions[cell.position] = (
+                    cell.leap.position,
                     cell.cell_type,
                 )
 
@@ -57,24 +81,21 @@ class Board:
         return board_repr
 
     def get_grid(self):
-        grid = {}
-
         for position in range(1, self.board_width * self.board_height + 1):
-            grid[position] = Cell(position)
+            self.__grid[position] = Cell(position)
 
         for start, end in self.snakes_ladders['L'].items():
-            grid[start] = Cell(start, "L")
-            grid[start].update_leap(grid[end])
+            self.__grid[start] = Cell(start, "L")
+            self.__grid[start].update_leap(self.__grid[end])
 
         for start, end in self.snakes_ladders['S'].items():
-            grid[start] = Cell(start, "S")
-            grid[start].update_leap(grid[end])
+            self.__grid[start] = Cell(start, "S")
+            self.__grid[start].update_leap(self.__grid[end])
 
         for position in range(1, self.board_width * self.board_height):
-            grid[position].update_next(grid[position + 1])
+            self.__grid[position].update_next(self.__grid[position + 1])
 
-        return grid
+        return self.__grid[1]
 
     def __len__(self):
-        board_size=self.board_height*self.board_width
-        return board_size
+        return self.__size

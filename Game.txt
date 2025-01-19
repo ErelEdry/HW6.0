@@ -32,7 +32,7 @@ Tal rolled a 5.
 Omri rolled a 6.
 Omri reached the end and wins!
 (Player(name=Omri, position=25:R->), 4)
-[1, 2, 3, 4, 5, 6, 24, 25] 
+[1, 2, 3, 4, 5, 6, 24, 25]
 Test result for shortest path True
 Tal rolled a 2.
 Yuval rolled a 1.
@@ -58,7 +58,7 @@ Yuval rolled a 3.
 Tal rolled a 4.
 Tal reached the end and wins!
 (Player(name=Tal, position=36:R->), 7)
-[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 36] 
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 36]
 Test result for shortest path True
 
 Process finished with exit code 0

@@ -1,4 +1,6 @@
 from Board import Board
+from Dice import Dice
+
 
 class Player:
     def __init__(self, name, board):
@@ -8,14 +10,14 @@ class Player:
             raise ValueError("name must be a string of letters")
         if not isinstance(board, Board):
             raise TypeError("board must be a Board object")
-        self.name=name
-        self.board=board
-        self.position=None
-        self.num_turns=0
+        self.name = name
+        self.board = board
+        self.position = None
+        self.num_turns = 0
 
     def __repr__(self):
-        pos_val = self.position.data.val if self.position else None
-        return f"Player(name={self.name}, position={pos_val})"
+        pos_repr = str(self.position) if self.position else None
+        return f"Player(name={self.name}, position={pos_repr})"
 
     def move(self, roll):
         if not isinstance(roll, int):
@@ -24,16 +26,27 @@ class Player:
             raise ValueError("roll need to be smaller than 7 and bigger than 0")
 
         if self.position is None:
-            self.position = self.board.get_grid()[1]
-            return False
+            for cell in self.board:
+                if cell.position == 1:
+                    self.position = cell
+                    return False
 
-        current_pos = self.position.data.val
-        new_position = current_pos + roll
-
+        target_position = self.position.position + roll
         board_size = len(self.board)
-        if new_position >= board_size:
-            self.position = self.board.get_grid()[board_size]
-            return True
-        else:
-            self.position = self.board.get_grid()[new_position]
+
+        if target_position > board_size:
             return False
+
+        if target_position == board_size:
+            for cell in self.board:
+                if cell.position == board_size:
+                    self.position = cell
+                    break
+            return True
+
+        for cell in self.board:
+            if cell.position == target_position:
+                self.position = cell
+                break
+
+        return False
