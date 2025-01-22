@@ -3,4 +3,3 @@ def id_generator(n):
     while starter <n:
         yield starter
         starter+=1
-        

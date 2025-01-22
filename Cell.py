@@ -4,7 +4,6 @@ from ADTs import Node
 
 class Cell:
     VALID_CELL_TYPES = {"R", "S", "L"}
-
     def __init__(self, position: int, cell_type: str = "R"):
         if not isinstance(position, int):
             raise TypeError("Position must be an integer")
@@ -22,7 +21,7 @@ class Cell:
         self.next = None
         self.leap = None
 
-    def update_next(self, next_cell: 'Cell') -> None:
+    def update_next(self, next_cell: 'Cell'):
         if not isinstance(next_cell, Cell):
             raise CellUpdateError(next_cell)
 
@@ -50,7 +49,7 @@ class Cell:
 
         self.leap = leap
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         if self.cell_type == "R":
             next_pos = str(self.next.position) if self.next else ""
             return f"{self.position}:{self.cell_type}->"

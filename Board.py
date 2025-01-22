@@ -1,6 +1,4 @@
 from Cell import Cell
-
-
 class Board:
     def __init__(self, board_width=5, board_height=5,snakes_ladders={'L': {3: 9, 5: 11, 6: 24}, 'S': {20: 4, 16: 2, 18: 10}}):
         try:
